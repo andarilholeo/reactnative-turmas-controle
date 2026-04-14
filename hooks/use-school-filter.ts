@@ -9,8 +9,8 @@
  * Esse é um exemplo clássico de "lista derivada" — um estado que pode ser
  * calculado a partir de outros estados sem precisar de useState próprio.
  */
+import { School } from '@/src/domain/entities/school';
 import { useMemo } from 'react';
-import { School } from '@/src/entities/school';
 
 export function useSchoolFilter(schools: School[], query: string): School[] {
   return useMemo(() => {

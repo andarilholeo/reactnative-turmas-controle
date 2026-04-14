@@ -1,9 +1,9 @@
 import { MedievalTheme } from '@/constants/theme';
-import { CreateSchoolDTO } from '@/src/entities/school';
+import { CreateSchoolDTO } from '@/src/domain/entities/school';
 import { useState } from 'react';
 import {
-  ActivityIndicator, Alert, Modal, StyleSheet,
-  Text, TextInput, TouchableOpacity, View,
+    ActivityIndicator, Alert, Modal, StyleSheet,
+    Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
 
 interface Props {

@@ -6,9 +6,9 @@ import { SchoolFormModal } from '@/components/schools/school-form-modal';
 import { TurmaFormData, TurmaFormModal } from '@/components/turmas/turma-form-modal';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { MedievalTheme } from '@/constants/theme';
-import { useSchools } from '@/src/contexts/SchoolsContext';
-import { TurmasProvider, useTurmas } from '@/src/contexts/TurmasContext';
-import { Turma, TURNO_LABEL } from '@/src/entities/turma';
+import { useSchools } from '@/src/application/contexts/SchoolsContext';
+import { TurmasProvider, useTurmas } from '@/src/application/contexts/TurmasContext';
+import { Turma, TURNO_LABEL } from '@/src/domain/entities/turma';
 
 function TurmaCard({ turma, onDelete }: { turma: Turma; onDelete: () => void }) {
   return (

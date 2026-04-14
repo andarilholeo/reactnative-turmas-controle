@@ -1,4 +1,5 @@
-import { handlers } from './handlers';
+import { handlers } from "./handlers";
+
 
 function matchRoute(
   pattern: string,
@@ -21,7 +22,6 @@ export function startMockServer(): void {
     input: RequestInfo | URL,
     init?: RequestInit,
   ): Promise<Response> => {
-    // Normaliza a URL para string
     const urlString =
       typeof input === 'string'
         ? input

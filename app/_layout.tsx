@@ -6,11 +6,11 @@ import { ActivityIndicator, View } from 'react-native';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { SchoolsProvider } from '@/src/contexts/SchoolsContext';
+import { SchoolsProvider } from '@/src/application/contexts/SchoolsContext';
 
 async function prepareMocks() {
   if (!__DEV__) return;
-  const { startMockServer } = await import('@/src/mocks/server');
+  const { startMockServer } = await import('@/src/infrastructure/mocks/server');
   startMockServer();
 }
 

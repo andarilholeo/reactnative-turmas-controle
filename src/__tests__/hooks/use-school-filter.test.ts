@@ -6,9 +6,9 @@
  * - renderHook() executa o hook num ambiente React mínimo.
  * - Garante que o useMemo se comporta corretamente com diferentes inputs.
  */
-import { renderHook } from '@testing-library/react-native';
 import { useSchoolFilter } from '@/hooks/use-school-filter';
-import { School } from '@/src/entities/school';
+import { School } from '@/src/domain/entities/school';
+import { renderHook } from '@testing-library/react-native';
 
 const MOCK_SCHOOLS: School[] = [
   { id: '1', name: 'Escola Dom Pedro I',  address: 'Rua das Flores, 123',  createdAt: '' },

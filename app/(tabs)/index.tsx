@@ -8,8 +8,8 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { MedievalTheme } from '@/constants/theme';
 import { useSchoolFilter } from '@/hooks/use-school-filter';
-import { useSchools } from '@/src/contexts/SchoolsContext';
-import { School } from '@/src/entities/school';
+import { useSchools } from '@/src/application/contexts/SchoolsContext';
+import { School } from '@/src/domain/entities/school';
 
 function MedievalHeader() {
   return (

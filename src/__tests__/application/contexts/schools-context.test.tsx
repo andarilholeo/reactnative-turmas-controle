@@ -1,29 +1,15 @@
-/**
- * Testes do SchoolsContext
- *
- * Estratégia: mock do schoolsRepository com jest.mock().
- *
- * Por que mockar o repositório e não o fetch()?
- *  - Testamos o COMPORTAMENTO do contexto (gerenciamento de estado),
- *    não a implementação de rede do repositório (já testada separadamente).
- *  - Cada camada tem seus próprios testes → isolamento real.
- *
- * jest.mock() substitui o módulo inteiro antes dos imports serem resolvidos.
- * O AsyncStorage é mockado automaticamente via moduleNameMapper (jest.config).
- */
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 import React from 'react';
 
-import { SchoolsProvider, useSchools } from '@/src/contexts/SchoolsContext';
-import { School } from '@/src/entities/school';
+import { SchoolsProvider, useSchools } from '@/src/application/contexts/SchoolsContext';
+import { School } from '@/src/domain/entities/school';
 
-// ── Mock do repositório ───────────────────────────────────────────────────────
 const MOCK_SCHOOLS: School[] = [
   { id: '1', name: 'Dom Pedro I', address: 'Rua A', createdAt: '' },
   { id: '2', name: 'Tiradentes',  address: 'Rua B', createdAt: '' },
 ];
 
-jest.mock('@/src/services/schools.service', () => ({
+jest.mock('@/src/domain/repositories/schools.repository', () => ({
   schoolsRepository: {
     findAll:  jest.fn(async () => [...MOCK_SCHOOLS]),
     create:   jest.fn(async (data: Partial<School>) => ({ ...data, id: '99', createdAt: '' })),
