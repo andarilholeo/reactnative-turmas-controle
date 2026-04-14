@@ -254,9 +254,3 @@ Paleta centralizada em `constants/theme.ts` — importar `MedievalTheme` em qual
 | `textSecondary` | `#BDBDBD` | Texto de apoio e placeholders |
 | `border` | `#3A3A3A` | Bordas e separadores |
 | `accent` | `#8F7A66` | Badges e ícones secundários |
-
----
-
-## 📄 Licença
-
-Projeto desenvolvido para fins educacionais.
