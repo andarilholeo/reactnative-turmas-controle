@@ -1,4 +1,4 @@
-# 🏫 Controle de Turmas
+﻿# 🏫 Controle de Turmas
 
 Sistema de gerenciamento de escolas públicas e turmas desenvolvido em **React Native** com **Expo SDK 54**, tema visual **Medieval Dark** e arquitetura em camadas inspirada em DDD.
 
@@ -8,21 +8,23 @@ Sistema de gerenciamento de escolas públicas e turmas desenvolvido em **React N
 
 ### Dashboard
 
-| Lista de Escolas | Busca por nome |
+| Lista de Escolas | 
 |:---:|:---:|
-| _coloque seu print aqui_ | _coloque seu print aqui_ |
+| ![Tela Inicial](docs/Dashboard.png) |
+
+| Cadastrar Escola | Editar Escola |
+|:---:|:---:|
+| ![Tela Inicial](docs/Modal_CriacaoEscola.png) | ![Tela Inicial](docs/Modal_EdicaoEscola.png) |
 
 ### Detalhes da Escola
 
 | Turmas | Modal Nova Turma | Modal Editar Turma |
 |:---:|:---:|:---:|
-| _coloque seu print aqui_ | _coloque seu print aqui_ | _coloque seu print aqui_ |
+|![Tela Inicial](docs/Tela_Turmas.png) | ![Tela Inicial](docs/Modal_CriacaoTurma.png) | ![Tela Inicial](docs/Modal_EdicaoTurma.png) |
 
 ### Formulários
 
-| Cadastrar Escola | Editar Escola |
-|:---:|:---:|
-| _coloque seu print aqui_ | _coloque seu print aqui_ |
+
 
 ---
 
@@ -254,3 +256,5 @@ Paleta centralizada em `constants/theme.ts` — importar `MedievalTheme` em qual
 | `textSecondary` | `#BDBDBD` | Texto de apoio e placeholders |
 | `border` | `#3A3A3A` | Bordas e separadores |
 | `accent` | `#8F7A66` | Badges e ícones secundários |
+
+
