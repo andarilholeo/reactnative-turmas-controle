@@ -1,29 +1,55 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Tema Medieval Escuro — design tokens do app.
+ *
+ * MedievalTheme: paleta completa para uso direto nos StyleSheets.
+ * Colors: tokens que ThemedText / ThemedView / tab bar consomem via
+ *         useThemeColor(). Ambos os modos (light/dark) usam o mesmo
+ *         tema escuro para que a aparência seja sempre consistente.
  */
 
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+// ── Paleta medieval escura ────────────────────────────────────────────────────
+export const MedievalTheme = {
+  /** Fundo principal da tela */
+  bg:             '#121212',
+  /** Fundo de superfícies secundárias (sheets, headers internos) */
+  surface:        '#1E1E1E',
+  /** Fundo dos cards */
+  card:           '#2A2A2A',
+  /** Texto primário */
+  textPrimary:    '#F5F5F5',
+  /** Texto secundário / placeholders */
+  textSecondary:  '#BDBDBD',
+  /** Dourado — botão primário e accent principal */
+  gold:           '#C2A878',
+  /** Dourado claro — estado hover/pressed */
+  goldHover:      '#D4B98A',
+  /** Botão secundário */
+  btnSecondary:   '#3A3A3A',
+  /** Bordas e separadores */
+  border:         '#3A3A3A',
+  /** Accent bruno — badges, ícones de destaque */
+  accent:         '#8F7A66',
+};
 
+// ── Colors para ThemedText / ThemedView / tab bar ─────────────────────────────
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    text:            MedievalTheme.textPrimary,
+    background:      MedievalTheme.bg,
+    tint:            MedievalTheme.gold,
+    icon:            MedievalTheme.textSecondary,
+    tabIconDefault:  MedievalTheme.textSecondary,
+    tabIconSelected: MedievalTheme.gold,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    text:            MedievalTheme.textPrimary,
+    background:      MedievalTheme.bg,
+    tint:            MedievalTheme.gold,
+    icon:            MedievalTheme.textSecondary,
+    tabIconDefault:  MedievalTheme.textSecondary,
+    tabIconSelected: MedievalTheme.gold,
   },
 };
 
