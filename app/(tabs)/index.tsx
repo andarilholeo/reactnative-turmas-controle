@@ -1,4 +1,4 @@
-import { router, type Href } from 'expo-router';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -8,8 +8,8 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { MedievalTheme } from '@/constants/theme';
 import { useSchoolFilter } from '@/hooks/use-school-filter';
-import { useSchools } from '@/src/contexts/SchoolsContext';
-import { School } from '@/src/entities/school';
+import { useSchools } from '@/src/application/contexts/SchoolsContext';
+import { School } from '@/src/domain/entities/school';
 
 function MedievalHeader() {
   return (
@@ -33,7 +33,8 @@ function SchoolCard({ school }: { school: School }) {
       style={styles.card}
       activeOpacity={0.85}
       onPress={() =>
-        router.push({ pathname: '/schools/[id]', params: { id: school.id } } as unknown as Href)
+        router.push({ pathname: '/schools/[id]', 
+          params: { id: school.id } })
       }
     >
       <View style={styles.cardIconBox}>

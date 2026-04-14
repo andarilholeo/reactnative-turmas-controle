@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {
     createContext,
     useCallback,
@@ -7,8 +8,10 @@ import React, {
     useState,
 } from 'react';
 
-import { CreateTurmaDTO, Turma, UpdateTurmaDTO } from '@/src/entities/turma';
-import { turmasRepository } from '@/src/services/turmas.service';
+import { CreateTurmaDTO, Turma, UpdateTurmaDTO } from '@/src/domain/entities/turma';
+import { turmasRepository } from '@/src/domain/repositories/turmas.repository';
+
+const cacheKey = (schoolId: string) => `@controle_turmas:turmas:${schoolId}`;
 
 interface TurmasContextData {
   turmas: Turma[];
@@ -38,8 +41,14 @@ export function TurmasProvider({ schoolId, children }: TurmasProviderProps) {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await turmasRepository.findBySchool(schoolId);
-      setTurmas(data);
+      const cached = await AsyncStorage.getItem(cacheKey(schoolId));
+      if (cached) {
+        setTurmas(JSON.parse(cached) as Turma[]);
+        setIsLoading(false);
+      }
+      const fresh = await turmasRepository.findBySchool(schoolId);
+      setTurmas(fresh);
+      await AsyncStorage.setItem(cacheKey(schoolId), JSON.stringify(fresh));
     } catch (err) {
       setError('Erro ao carregar turmas.');
       console.error(err);
@@ -54,18 +63,30 @@ export function TurmasProvider({ schoolId, children }: TurmasProviderProps) {
 
   const addTurma = useCallback(async (data: CreateTurmaDTO) => {
     const newTurma = await turmasRepository.create(schoolId, data);
-    setTurmas((prev) => [...prev, newTurma]);
+    setTurmas((prev) => {
+      const updated = [...prev, newTurma];
+      AsyncStorage.setItem(cacheKey(schoolId), JSON.stringify(updated));
+      return updated;
+    });
   }, [schoolId]);
 
   const updateTurma = useCallback(async (id: string, data: UpdateTurmaDTO) => {
     const updated = await turmasRepository.update(id, data);
-    setTurmas((prev) => prev.map((t) => (t.id === id ? updated : t)));
-  }, []);
+    setTurmas((prev) => {
+      const next = prev.map((t) => (t.id === id ? updated : t));
+      AsyncStorage.setItem(cacheKey(schoolId), JSON.stringify(next));
+      return next;
+    });
+  }, [schoolId]);
 
   const deleteTurma = useCallback(async (id: string) => {
     await turmasRepository.delete(id);
-    setTurmas((prev) => prev.filter((t) => t.id !== id));
-  }, []);
+    setTurmas((prev) => {
+      const next = prev.filter((t) => t.id !== id);
+      AsyncStorage.setItem(cacheKey(schoolId), JSON.stringify(next));
+      return next;
+    });
+  }, [schoolId]);
 
   const value = useMemo<TurmasContextData>(
     () => ({ turmas, isLoading, error, addTurma, updateTurma, deleteTurma, refresh: loadTurmas }),

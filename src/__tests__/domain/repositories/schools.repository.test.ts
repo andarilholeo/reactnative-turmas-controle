@@ -1,30 +1,14 @@
-/**
- * Testes do SchoolsRepository
- *
- * Estratégia: mock do fetch() global.
- *
- * Por que não usar MSW aqui?
- *  MSW v2 usa pacotes ESM-only (rettime) incompatíveis com Jest/CommonJS.
- *  Para testes UNITÁRIOS, mockar fetch() diretamente é mais correto:
- *  testamos a lógica do Repository (serialização JSON, tratamento de erro,
- *  construção da URL) sem depender de infraestrutura externa.
- *
- * Conceito: "test double" — substituímos a dependência real (fetch de rede)
- * por uma implementação controlada (jest.fn()) que retorna dados previsíveis.
- */
-import { School } from '@/src/entities/school';
-import { schoolsRepository } from '@/src/services/schools.service';
+import { School } from '@/src/domain/entities/school';
+import { schoolsRepository } from '@/src/domain/repositories/schools.repository';
 
 const FAKE_SCHOOLS: School[] = [
   { id: '1', name: 'Dom Pedro I', address: 'Rua A', createdAt: '2024-01-01T00:00:00.000Z' },
   { id: '2', name: 'Tiradentes',  address: 'Rua B', createdAt: '2024-02-01T00:00:00.000Z' },
 ];
 
-/** Fábrica de Response mockada bem-sucedida */
 const okResponse = (data: unknown) =>
   ({ ok: true, json: async () => data, text: async () => '' }) as Response;
 
-/** Fábrica de Response mockada com erro */
 const errResponse = (status: number) =>
   ({ ok: false, status, text: async () => 'Not Found' }) as unknown as Response;
 
@@ -54,7 +38,6 @@ describe('SchoolsRepository', () => {
       const result = await schoolsRepository.create({ name: 'Nova', address: 'Rua Nova' });
       expect(result.id).toBe('99');
       expect(result.name).toBe('Nova');
-      // Verifica que o método correto foi chamado
       const [, opts] = (global.fetch as jest.Mock).mock.calls[0];
       expect(opts.method).toBe('POST');
     });

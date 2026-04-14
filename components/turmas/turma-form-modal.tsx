@@ -1,9 +1,9 @@
 import { MedievalTheme } from '@/constants/theme';
-import { Turno, TURNO_LABEL } from '@/src/entities/turma';
+import { Turno, TURNO_LABEL } from '@/src/domain/entities/turma';
 import { useState } from 'react';
 import {
-  ActivityIndicator, Alert, Modal, StyleSheet,
-  Text, TextInput, TouchableOpacity, View,
+    ActivityIndicator, Alert, Modal, StyleSheet,
+    Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
 
 export type TurmaFormData = { name: string; shift: Turno; academicYear: number };
