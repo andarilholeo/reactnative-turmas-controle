@@ -10,7 +10,7 @@ import { useSchools } from '@/src/application/contexts/SchoolsContext';
 import { TurmasProvider, useTurmas } from '@/src/application/contexts/TurmasContext';
 import { Turma, TURNO_LABEL } from '@/src/domain/entities/turma';
 
-function TurmaCard({ turma, onDelete }: { turma: Turma; onDelete: () => void }) {
+function TurmaCard({ turma, onEdit, onDelete }: { turma: Turma; onEdit: () => void; onDelete: () => void }) {
   return (
     <View style={styles.card}>
       <View style={styles.cardLeft}>
@@ -21,6 +21,9 @@ function TurmaCard({ turma, onDelete }: { turma: Turma; onDelete: () => void }) 
         <View style={styles.shiftBadge}>
           <Text style={styles.shiftText}>{TURNO_LABEL[turma.shift]}</Text>
         </View>
+        <TouchableOpacity onPress={onEdit} style={styles.editBtn} hitSlop={8}>
+          <IconSymbol name="pencil" size={18} color={MedievalTheme.gold} />
+        </TouchableOpacity>
         <TouchableOpacity onPress={onDelete} style={styles.deleteBtn} hitSlop={8}>
           <IconSymbol name="trash" size={18} color={MedievalTheme.textSecondary} />
         </TouchableOpacity>
@@ -29,13 +32,15 @@ function TurmaCard({ turma, onDelete }: { turma: Turma; onDelete: () => void }) 
   );
 }
 
-function SchoolDetailContent({ schoolId, schoolName }: { schoolId: string; schoolName: string }) {
-  const { turmas, isLoading, error, addTurma, deleteTurma } = useTurmas();
-  const { updateSchool, deleteSchool } = useSchools();
-  const school = useSchools().schools.find((s) => s.id === schoolId);
+function SchoolDetailContent({ schoolId }: { schoolId: string }) {
+  const { turmas, isLoading, error, addTurma, updateTurma, deleteTurma } = useTurmas();
+  const { schools, updateSchool, deleteSchool } = useSchools();
+  const school = schools.find((s) => s.id === schoolId);
+  const schoolName = school?.name ?? 'Escola';
 
   const [editSchoolVisible, setEditSchoolVisible] = useState(false);
   const [addTurmaVisible, setAddTurmaVisible] = useState(false);
+  const [editingTurma, setEditingTurma] = useState<Turma | null>(null);
 
   const handleDeleteSchool = () =>
     Alert.alert('Excluir escola', `Deseja excluir "${schoolName}"?`, [
@@ -56,6 +61,11 @@ function SchoolDetailContent({ schoolId, schoolName }: { schoolId: string; schoo
 
   const handleAddTurma = async (data: TurmaFormData) => {
     await addTurma({ ...data, schoolId });
+  };
+
+  const handleEditTurma = async (data: TurmaFormData) => {
+    if (!editingTurma) return;
+    await updateTurma(editingTurma.id, data);
   };
 
   return (
@@ -101,7 +111,12 @@ function SchoolDetailContent({ schoolId, schoolName }: { schoolId: string; schoo
         {!isLoading && error && <Text style={styles.errorText}>{error}</Text>}
         {!isLoading && !error && turmas.length === 0 && <Text style={styles.feedbackText}>Nenhuma turma cadastrada.</Text>}
         {!isLoading && !error && turmas.map((t) => (
-          <TurmaCard key={t.id} turma={t} onDelete={() => handleDeleteTurma(t)} />
+          <TurmaCard
+            key={t.id}
+            turma={t}
+            onEdit={() => setEditingTurma(t)}
+            onDelete={() => handleDeleteTurma(t)}
+          />
         ))}
       </ScrollView>
 
@@ -122,18 +137,34 @@ function SchoolDetailContent({ schoolId, schoolName }: { schoolId: string; schoo
         onClose={() => setAddTurmaVisible(false)}
         onSubmit={handleAddTurma}
       />
+      <TurmaFormModal
+        visible={editingTurma !== null}
+        title="Editar Turma"
+        initialValues={editingTurma ?? undefined}
+        onClose={() => setEditingTurma(null)}
+        onSubmit={handleEditTurma}
+      />
     </>
   );
 }
 
 export default function SchoolDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { schools } = useSchools();
-  const schoolName = schools.find((s) => s.id === id)?.name ?? 'Escola';
+
+  if (!id) {
+    return (
+      <View style={styles.centered}>
+        <Text style={styles.errorText}>ID da escola não encontrado</Text>
+        <TouchableOpacity onPress={() => router.back()} style={{ marginTop: 16 }}>
+          <Text style={{ color: MedievalTheme.gold }}>← Voltar</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <TurmasProvider schoolId={id}>
-      <SchoolDetailContent schoolId={id} schoolName={schoolName} />
+      <SchoolDetailContent schoolId={id} />
     </TurmasProvider>
   );
 }
@@ -169,6 +200,7 @@ const styles = StyleSheet.create({
   feedbackText: { fontSize: 14, color: MedievalTheme.textSecondary, textAlign: 'center' },
   errorText: { fontSize: 14, color: '#CF6679', textAlign: 'center' },
   cardRight: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  editBtn: { padding: 4 },
   deleteBtn: { padding: 4 },
   headerActions: { flexDirection: 'row', gap: 12, marginRight: 4 },
   fab: {

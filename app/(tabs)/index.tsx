@@ -1,4 +1,4 @@
-import { router, type Href } from 'expo-router';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -33,7 +33,8 @@ function SchoolCard({ school }: { school: School }) {
       style={styles.card}
       activeOpacity={0.85}
       onPress={() =>
-        router.push({ pathname: '/schools/[id]', params: { id: school.id } } as unknown as Href)
+        router.push({ pathname: '/schools/[id]', 
+          params: { id: school.id } })
       }
     >
       <View style={styles.cardIconBox}>
