@@ -9,7 +9,7 @@ Sistema de gerenciamento de escolas públicas e turmas desenvolvido em **React N
 ### Dashboard
 
 | Lista de Escolas | 
-|:---:|:---:|
+|:---:|
 | ![Tela Inicial](docs/Dashboard.png) |
 
 | Cadastrar Escola | Editar Escola |
